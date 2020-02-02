@@ -2,9 +2,9 @@ package bot.boobbot.commands.audio
 
 import bot.boobbot.BoobBot.Companion.playerManager
 import bot.boobbot.audio.AudioLoader
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.Utils
 import bot.boobbot.misc.toUriOrNull
@@ -16,7 +16,7 @@ import bot.boobbot.models.VoiceCommand
     guildOnly = true,
     nsfw = true
 )
-class Play : VoiceCommand {
+class Play : VoiceCommand() {
 
     override fun execute(ctx: Context) {
         val shouldPlay = performVoiceChecks(ctx)

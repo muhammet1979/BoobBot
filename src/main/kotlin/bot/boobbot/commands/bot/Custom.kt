@@ -1,22 +1,21 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
-import bot.boobbot.flight.SubCommand
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.Utils
 import net.dv8tion.jda.api.Permission
 
-@CommandProperties(aliases = ["cc"], description = "Custom commands", guildOnly = true)
-class Custom : Command {
+@CommandProperties(aliases = ["cc"], description = "Manage custom commands.", guildOnly = true)
+class Custom : Command() {
 
     override fun execute(ctx: Context) {
         ctx.send("`bbcc <${subcommands.keys.joinToString("|")}>`")
     }
 
-    @SubCommand
+    @CommandProperties(description = "Adds a custom command for this server.")
     fun add(ctx: Context) {
         if (!ctx.userCan(Permission.MANAGE_SERVER)) {
             ctx.send("You don't have `MANAGE_SERVER` permission, whore.")
@@ -44,7 +43,7 @@ class Custom : Command {
         ctx.send("done whore")
     }
 
-    @SubCommand(aliases = ["del", "remove", "rem"])
+    @CommandProperties(aliases = ["del", "remove", "rem"], description = "Removes a custom command for this server.")
     fun delete(ctx: Context) {
         if (!ctx.userCan(Permission.MANAGE_SERVER)) {
             ctx.send("You don't have `MANAGE_SERVER` permission, whore.")
@@ -62,7 +61,7 @@ class Custom : Command {
         ctx.send("done whore")
     }
 
-    @SubCommand
+    @CommandProperties(description = "Lists all custom commands for this server.")
     fun list(ctx: Context) {
         val allCommands = BoobBot.database.getCustomCommands(ctx.guild!!.id)
 

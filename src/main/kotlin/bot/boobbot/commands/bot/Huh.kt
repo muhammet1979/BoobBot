@@ -1,13 +1,13 @@
 package bot.boobbot.commands.bot
 
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import java.time.Instant
 
 @CommandProperties(description = "Seems you don't discord.", aliases = ["howto"])
-class Huh : Command {
+class Huh : Command() {
 
     override fun execute(ctx: Context) {
         ctx.embed {

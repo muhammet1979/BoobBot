@@ -1,8 +1,8 @@
 package bot.boobbot.commands.audio
 
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 
 import bot.boobbot.misc.Formats
 import bot.boobbot.models.Config
@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.Permission
     category = Category.AUDIO,
     guildOnly = true
 )
-class Disconnect : VoiceCommand {
+class Disconnect : VoiceCommand() {
 
     override fun execute(ctx: Context) {
         val player = ctx.audioPlayer

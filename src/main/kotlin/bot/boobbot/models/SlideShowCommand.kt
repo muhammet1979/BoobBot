@@ -1,8 +1,8 @@
 package bot.boobbot.models
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.*
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
@@ -12,7 +12,7 @@ import java.awt.Color
 import java.util.concurrent.TimeUnit
 
 
-abstract class SlideShowCommand : Command {
+abstract class SlideShowCommand : Command() {
 
     private val headers = Headers.of("Key", BoobBot.config.bbApiKey)
 

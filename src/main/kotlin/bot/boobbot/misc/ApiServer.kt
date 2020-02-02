@@ -1,7 +1,7 @@
 package bot.boobbot.misc
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Category
+import bot.boobbot.flight.api.Category
 import com.sun.management.OperatingSystemMXBean
 import de.mxro.metrics.jre.Metrics
 import io.ktor.application.ApplicationCallPipeline
@@ -155,14 +155,15 @@ class ApiServer {
                     val categories = hashMapOf<String, JSONArray>()
 
                     BoobBot.commands.values
-                        .filter { it.properties.category != Category.DEV && !it.properties.hidden }
+                        .filter { it.properties().let { p -> p.category != Category.DEV && !p.hidden } }
                         .forEach {
-                            val category = categories.computeIfAbsent(it.properties.category.name) { JSONArray() }
+                            val properties = it.properties()
+                            val category = categories.computeIfAbsent(properties.category.name) { JSONArray() }
                             val j = JSONObject()
-                                .put("command", it.name)
-                                .put("category", it.properties.category)
-                                .put("description", it.properties.description)
-                                .put("aliases", "[${it.properties.aliases.joinToString(", ")}]")
+                                .put("command", it.name())
+                                .put("category", properties.category)
+                                .put("description", properties.description)
+                                .put("aliases", "[${properties.aliases.joinToString(", ")}]")
 
                             category.put(j)
                         }

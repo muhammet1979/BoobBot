@@ -1,9 +1,9 @@
 package bot.boobbot.commands.audio
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.Utils
@@ -21,7 +21,7 @@ import java.time.Instant
     guildOnly = true,
     nsfw = true
 )
-class Queue : VoiceCommand {
+class Queue : VoiceCommand() {
 
     override fun execute(ctx: Context) {
         val shouldPlay = performVoiceChecks(ctx)

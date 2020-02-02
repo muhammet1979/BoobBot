@@ -1,8 +1,8 @@
 package bot.boobbot.commands.audio
 
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.models.VoiceCommand
@@ -12,7 +12,7 @@ import bot.boobbot.models.VoiceCommand
     category = Category.AUDIO,
     guildOnly = true
 )
-class Skip : VoiceCommand {
+class Skip : VoiceCommand() {
 
     override fun execute(ctx: Context) {
         val shouldPlay = performVoiceChecks(ctx)

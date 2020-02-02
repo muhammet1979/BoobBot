@@ -1,13 +1,13 @@
 package bot.boobbot.models
 
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.entities.VoiceChannel
 
-interface VoiceCommand : Command {
+open class VoiceCommand : Command() {
 
     fun isDJ(member: Member): Boolean {
         return member.roles.stream().anyMatch { x -> x.name.equals("dj", true) }

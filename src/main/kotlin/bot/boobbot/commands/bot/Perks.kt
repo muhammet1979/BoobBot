@@ -1,12 +1,12 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 
 @CommandProperties(description = "Receive your rewards after pledging on Patreon")
-class Perks : Command {
+class Perks : Command() {
 
     override fun execute(ctx: Context) {
         ctx.send("Searching for your pledge. This could take up to 30 seconds.")

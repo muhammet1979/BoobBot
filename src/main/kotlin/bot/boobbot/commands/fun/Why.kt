@@ -1,14 +1,14 @@
 package bot.boobbot.commands.`fun`
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.json
 
 @CommandProperties(description = "Random why questions", category = Category.FUN)
-class Why : AsyncCommand {
+class Why : Command() {
 
     override suspend fun executeAsync(ctx: Context) {
 

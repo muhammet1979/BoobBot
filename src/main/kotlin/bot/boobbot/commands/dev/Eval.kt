@@ -1,17 +1,17 @@
 package bot.boobbot.commands.dev
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Utils
 import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngineFactory
 
 
 @CommandProperties(description = "Eval", category = Category.DEV, developerOnly = true)
-class Eval : Command {
+class Eval : Command() {
 
     private val engine = KotlinJsr223JvmLocalScriptEngineFactory().scriptEngine
     private val evalThread = Thread("fuck")

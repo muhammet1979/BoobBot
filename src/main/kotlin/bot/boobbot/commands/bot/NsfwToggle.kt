@@ -1,9 +1,9 @@
 package bot.boobbot.commands.bot
 
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import net.dv8tion.jda.api.Permission
 
 @CommandProperties(
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.Permission
     guildOnly = true,
     category = Category.MISC
 )
-class NsfwToggle : Command {
+class NsfwToggle : Command() {
 
     override fun execute(ctx: Context) {
         if (!ctx.botCan(Permission.MANAGE_CHANNEL)) {

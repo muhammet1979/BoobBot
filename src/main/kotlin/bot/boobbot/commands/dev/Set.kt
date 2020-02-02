@@ -1,7 +1,10 @@
 package bot.boobbot.commands.dev
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.*
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.separate
 import net.dv8tion.jda.api.Permission
@@ -10,7 +13,7 @@ import net.dv8tion.jda.api.entities.Icon
 
 
 @CommandProperties(description = "Settings", category = Category.DEV, developerOnly = true)
-class Set : Command {
+class Set : Command() {
 
     var isCustomGameSet = false
         private set
@@ -19,7 +22,7 @@ class Set : Command {
         ctx.send("Specify a subcommand: ${subcommands.keys.joinToString(", ")}")
     }
 
-    @SubCommand
+    @CommandProperties
     fun name(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("to what, whore?")
@@ -33,7 +36,7 @@ class Set : Command {
         )
     }
 
-    @SubCommand(aliases = ["activity"])
+    @CommandProperties(aliases = ["activity"])
     fun game(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("${ctx.trigger}set game <type> <content...>")
@@ -65,7 +68,7 @@ class Set : Command {
         ctx.send(Formats.info("Yes daddy, status set"))
     }
 
-    @SubCommand
+    @CommandProperties
     fun nick(ctx: Context) {
         if (ctx.guild == null) {
             return ctx.send("This command must be executed within a guild.")
@@ -83,7 +86,7 @@ class Set : Command {
             )
     }
 
-    @SubCommand
+    @CommandProperties
     fun avatar(ctx: Context) {
         BoobBot.requestUtil.get(ctx.args[0]).queue {
             val image = it?.body()?.byteStream() ?: return@queue ctx.send("Unable to fetch avatar")
@@ -96,7 +99,7 @@ class Set : Command {
         }
     }
 
-    @SubCommand
+    @CommandProperties
     fun icons(ctx: Context) {
         BoobBot.requestUtil.get(ctx.args[0]).queue {
             val image = it?.body()?.byteStream() ?: return@queue ctx.send("Unable to fetch image")

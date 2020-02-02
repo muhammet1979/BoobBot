@@ -1,10 +1,10 @@
 package bot.boobbot.commands.nsfw
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.json
 import okhttp3.Headers
@@ -18,7 +18,7 @@ import java.awt.Color
     donorOnly = true,
     category = Category.GENERAL
 )
-class Magik : AsyncCommand {
+class Magik : Command() {
 
     private val baseUrl = HttpUrl.parse("https://dankmemer.services/api/magik")!!
     private val categories = mapOf(

@@ -1,15 +1,15 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import java.time.Instant
 
 @CommandProperties(description = "Bot and support guild links", aliases = ["join", "oauth", "link", "links", "support"])
-class Invite : Command {
+class Invite : Command() {
 
     override fun execute(ctx: Context) {
         val requester = BoobBot.shardManager.authorOrAnonymous(ctx)

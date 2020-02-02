@@ -1,10 +1,10 @@
 package bot.boobbot.commands.nsfw
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.json
@@ -19,7 +19,7 @@ import java.time.Instant
     category = Category.VIDEOSEARCHING,
     donorOnly = true
 )
-class RedTube : AsyncCommand {
+class RedTube : Command() {
     private fun urlFor(query: String): String {
         return "https://api.redtube.com/?data=redtube.Videos.searchVideos&output=json&thumbsize=big&ordering=mostviewed&page=1&search=$query"
     }

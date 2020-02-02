@@ -1,34 +1,36 @@
-package bot.boobbot.flight
+package bot.boobbot.flight.api
 
 import bot.boobbot.BoobBot
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.internal.Executable
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import net.dv8tion.jda.api.EmbedBuilder
 import java.time.Instant
 
-interface Command {
+open class Command : Executable {
+    val subcommands = hashMapOf<String, SubCommand>()
 
-    val name: String
-        get() = this.javaClass.simpleName.toLowerCase()
+    override fun properties(): CommandProperties {
+        return this::class.java.getAnnotation(CommandProperties::class.java)
+    }
 
-    val properties: CommandProperties
-        get() = this.javaClass.getAnnotation(CommandProperties::class.java)
+    override fun execute(ctx: Context) {
+        GlobalScope.async {
+            executeAsync(ctx)
+        }
+    }
 
-    val hasProperties: Boolean
-        get() = this.javaClass.isAnnotationPresent(CommandProperties::class.java)
+    open suspend fun executeAsync(ctx: Context) {
 
-    val subcommands: Map<String, SubCommandWrapper>
-        get() = BoobBot.commands.getValue(name).subcommands
+    }
 
-    /**
-     * Command-local check that is executed before the command or any subcommands are
-     * executed.
-     *
-     * @returns Whether or not command execution can proceed.
-     */
-    fun localCheck(ctx: Context): Boolean = true
-
-    fun execute(ctx: Context)
+    fun findSubcommand(name: String): SubCommand? {
+        return subcommands[name]
+            ?: subcommands.values.firstOrNull { it.properties.aliases.contains(name) }
+    }
 
     fun sendSubcommandHelp(ctx: Context) {
         val requester = BoobBot.shardManager.authorOrAnonymous(ctx)
@@ -43,7 +45,7 @@ interface Command {
             .setTimestamp(Instant.now())
 
         for (sc in this.subcommands.values.sortedBy { it.name }) {
-            embed.appendDescription("`${padEnd(sc.name, 16)}:` ${sc.description}\n")
+            embed.appendDescription("`${padEnd(sc.name, 16)}:` ${sc.properties.description}\n")
         }
 
         ctx.embed(embed.build())
@@ -52,5 +54,4 @@ interface Command {
     private fun padEnd(str: String, length: Int = 15): String {
         return str + "\u200B ".repeat(length - str.length)
     }
-
 }

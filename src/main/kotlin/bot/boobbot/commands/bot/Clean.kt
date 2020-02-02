@@ -1,10 +1,10 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
     guildOnly = true,
     category = Category.MISC
 )
-class Clean : Command {
+class Clean : Command() {
 
     private val DISCORD_EPOCH = 1420070400000L
     private val TIMESTAMP_OFFSET = 22

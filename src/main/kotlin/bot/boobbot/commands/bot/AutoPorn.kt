@@ -1,7 +1,10 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.*
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.exceptions.ErrorResponseException
@@ -16,7 +19,7 @@ import java.awt.Color
     category = Category.MISC,
     donorOnly = true
 )
-class AutoPorn : Command {
+class AutoPorn : Command() {
 
     private val types = mapOf(
         "gif" to "Gifs",
@@ -44,7 +47,7 @@ class AutoPorn : Command {
         }
     }
 
-    @SubCommand
+    @CommandProperties(description = "Sets the channel used by AutoPorn.")
     fun set(ctx: Context) {
         if (ctx.args.size < 2 ||
             ctx.args[0].isEmpty() ||
@@ -92,7 +95,7 @@ class AutoPorn : Command {
         })
     }
 
-    @SubCommand(aliases = ["disable"])
+    @CommandProperties(aliases = ["disable"], description = "Disables AutoPorn for this server.")
     fun delete(ctx: Context) {
         if (BoobBot.database.getWebhook(ctx.guild!!.id) == null) {
             return ctx.embed {
@@ -108,7 +111,7 @@ class AutoPorn : Command {
         }
     }
 
-    @SubCommand
+    @CommandProperties(description = "Shows the status of AutoPorn for this server.")
     fun status(ctx: Context) {
         val wh = BoobBot.database.getWebhook(ctx.guild!!.id)
             ?: return ctx.embed {

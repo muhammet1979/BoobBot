@@ -1,9 +1,8 @@
 package bot.boobbot.commands.mod
 
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.awaitSuppressed
 import bot.boobbot.misc.thenException
 import bot.boobbot.models.ModCommand
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit
     guildOnly = true,
     category = Category.MOD
 )
-class SoftBan : AsyncCommand, ModCommand() {
+class SoftBan : ModCommand() {
 
     override suspend fun executeAsync(ctx: Context) {
         val (target, reason) = resolveTargetAndReason(ctx)

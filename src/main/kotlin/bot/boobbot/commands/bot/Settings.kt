@@ -1,17 +1,16 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
-import bot.boobbot.flight.SubCommand
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.Utils
 import net.dv8tion.jda.api.Permission
 
 @CommandProperties(description = "Manage BoobBot's settings for this server", guildOnly = true)
-class Settings : Command {
+class Settings : Command() {
 
     private val prohibitDisable = arrayOf("help", "settings")
 
@@ -23,7 +22,7 @@ class Settings : Command {
         return "are"
     }
 
-    override fun localCheck(ctx: Context): Boolean {
+    override fun doLocalCheck(ctx: Context): Boolean {
         if (!ctx.userCan(Permission.MANAGE_SERVER)) {
             ctx.send("You don't have `MANAGE_SERVER` permission, whore.")
             return false
@@ -33,15 +32,10 @@ class Settings : Command {
     }
 
     override fun execute(ctx: Context) {
-//        ctx.embed {
-//            setColor(Colors.getEffectiveColor(ctx.message))
-//            setTitle("BoobBot Server Settings")
-//            setDescription("Subcommands: ${subcommands.keys.joinToString(", ")}")
-//        }
         sendSubcommandHelp(ctx)
     }
 
-    @SubCommand(aliases = ["vdc", "disabled"], description = "Lists all disabled commands.")
+    @CommandProperties(aliases = ["vdc", "disabled"], description = "Lists all disabled commands.")
     fun viewDisabledCmds(ctx: Context) {
         val disabled = BoobBot.database.getDisabledCommands(ctx.guild!!.id)
         val disabledFmt = if (disabled.isEmpty()) "*No commands disabled.*" else disabled.sorted().joinToString(", ")
@@ -53,7 +47,7 @@ class Settings : Command {
         }
     }
 
-    @SubCommand(aliases = ["disable", "dc"], description = "Disables commands for the entire server.")
+    @CommandProperties(aliases = ["disable", "dc"], description = "Disables commands for the entire server.")
     fun disableCmds(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("wtf, i don't mind read. Specify what commands you wanna disable, whore.")
@@ -70,7 +64,7 @@ class Settings : Command {
         val invalid = toDisable.filter {
             !BoobBot.commands.containsKey(it) ||
                     prohibitDisable.contains(it) ||
-                    BoobBot.commands[it]?.properties?.developerOnly ?: false
+                    BoobBot.commands[it]?.properties()?.developerOnly ?: false
         }
 
         if (invalid.isNotEmpty()) {
@@ -81,7 +75,7 @@ class Settings : Command {
         ctx.send("Disabled ${Formats.monospaced(toDisable)}.")
     }
 
-    @SubCommand(aliases = ["enable", "ec"], description = "Re-enable disabled commands for the entire server.")
+    @CommandProperties(aliases = ["enable", "ec"], description = "Re-enable disabled commands for the entire server.")
     fun enableCmds(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("wtf, i don't mind read. Specify what commands you wanna re-enable, whore.")
@@ -105,7 +99,7 @@ class Settings : Command {
         ctx.send("Enabled ${Formats.monospaced(toEnable)}.")
     }
 
-    @SubCommand(aliases = ["vdh"], description = "Lists commands disabled in the current channel.")
+    @CommandProperties(aliases = ["vdh"], description = "Lists commands disabled in the current channel.")
     fun viewDisabledHere(ctx: Context) {
         val disabled = BoobBot.database.getDisabledForChannel(ctx.guild!!.id, ctx.channel.id)
         val disabledFmt =
@@ -118,7 +112,7 @@ class Settings : Command {
         }
     }
 
-    @SubCommand(aliases = ["dh"], description = "Disables commands for the current channel.", donorOnly = true)
+    @CommandProperties(aliases = ["dh"], description = "Disables commands for the current channel.", donorOnly = true)
     fun disableHere(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("wtf, i don't mind read. Specify what commands you wanna disable for this channel, whore.")
@@ -135,7 +129,7 @@ class Settings : Command {
         val invalid = toDisable.filter {
             !BoobBot.commands.containsKey(it) ||
                     prohibitDisable.contains(it) ||
-                    BoobBot.commands[it]?.properties?.developerOnly ?: false
+                    BoobBot.commands[it]?.properties()?.developerOnly ?: false
         }
 
         if (invalid.isNotEmpty()) {
@@ -146,7 +140,7 @@ class Settings : Command {
         ctx.send("Disabled ${Formats.monospaced(toDisable)} for this channel.")
     }
 
-    @SubCommand(aliases = ["eh"], description = "Re-enables disabled commands for the current channel.")
+    @CommandProperties(aliases = ["eh"], description = "Re-enables disabled commands for the current channel.")
     fun enableHere(ctx: Context) {
         if (ctx.args.isEmpty()) {
             return ctx.send("wtf, i don't mind read. Specify what commands you wanna re-enable for this channel, whore.")
@@ -170,7 +164,7 @@ class Settings : Command {
         ctx.send("Enabled ${Formats.monospaced(toEnable)} for this channel.")
     }
 
-    @SubCommand(aliases = ["prefix", "sp"], description = "Change the prefix for the entire server.")
+    @CommandProperties(aliases = ["prefix", "sp"], description = "Change the prefix for the entire server.")
     fun setPrefix(ctx: Context) {
         if (!Utils.checkDonor(ctx.message)) {
             return ctx.send(
@@ -190,7 +184,7 @@ class Settings : Command {
     }
 
 
-    @SubCommand(aliases = ["clearprefix", "dp"], description = "Resets the prefix back to the default.")
+    @CommandProperties(aliases = ["clearprefix", "dp"], description = "Resets the prefix back to the default.")
     fun removePrefix(ctx: Context) {
         if (BoobBot.database.getPrefix(ctx.guild!!.id) == null) {
             return ctx.send("wtf, i don't have a prefix here, whore.")

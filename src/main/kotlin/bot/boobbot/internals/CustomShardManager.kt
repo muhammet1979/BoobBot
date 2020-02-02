@@ -1,7 +1,7 @@
 package bot.boobbot.internals
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Context
 import bot.boobbot.handlers.EventHandler
 import bot.boobbot.handlers.MessageHandler
 import bot.boobbot.misc.Utils

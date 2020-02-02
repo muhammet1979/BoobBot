@@ -1,4 +1,4 @@
-package bot.boobbot.flight
+package bot.boobbot.flight.api
 
 enum class Category(val title: String, val description: String, val nsfw: Boolean) {
     GENERAL("<:Ass:520247323343978509> General NSFW", "Vanilla content that's sure to please.", true),

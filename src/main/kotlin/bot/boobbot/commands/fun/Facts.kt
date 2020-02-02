@@ -1,15 +1,15 @@
 package bot.boobbot.commands.`fun`
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.json
 
 @CommandProperties(description = "Random facts", aliases = ["fact"], category = Category.FUN)
-class Facts : AsyncCommand {
+class Facts : Command() {
 
     override suspend fun executeAsync(ctx: Context) {
 

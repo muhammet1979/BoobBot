@@ -2,6 +2,10 @@ package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
 import bot.boobbot.flight.*
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.models.Config
@@ -13,7 +17,7 @@ import java.time.Instant
     aliases = ["halp", "halllp", "coms", "commands", "cmds"],
     category = Category.MISC
 )
-class Help : Command {
+class Help : Command() {
 
     override fun execute(ctx: Context) {
         val prefix = ctx.customPrefix ?: BoobBot.defaultPrefix
@@ -61,8 +65,8 @@ class Help : Command {
         val prefix = ctx.customPrefix ?: BoobBot.defaultPrefix
 
         val categoryCommands = BoobBot.commands.values
-            .filter { it.properties.category == category }
-            .joinToString("\n") { "`$prefix${padEnd(it.name)}:` ${it.properties.description}" }
+            .filter { it.properties().category == category }
+            .joinToString("\n") { "`$prefix${padEnd(it.name())}:` ${it.properties().description}" }
 
         val embed = builder(ctx)
             .addField("Commands in **${category.name.toLowerCase()}**", categoryCommands, false)
@@ -70,18 +74,18 @@ class Help : Command {
         send(ctx, embed, dm)
     }
 
-    fun sendCommandHelp(ctx: Context, command: ExecutableCommand, dm: Boolean) {
+    fun sendCommandHelp(ctx: Context, command: Command, dm: Boolean) {
         val prefix = ctx.customPrefix ?: BoobBot.defaultPrefix
 
-        val aliases = if (command.properties.aliases.isEmpty()) {
+        val aliases = if (command.properties().aliases.isEmpty()) {
             "None"
         } else {
-            command.properties.aliases.joinToString(", ")
+            command.properties().aliases.joinToString(", ")
         }
 
         val info = String.format(
             "Command:\n**%s%s**\nAliases:\n**%s**\nDescription:\n**%s**",
-            prefix, command.name, aliases, command.properties.description
+            prefix, command.name(), aliases, command.properties().description
         )
 
         val embed = builder(ctx)

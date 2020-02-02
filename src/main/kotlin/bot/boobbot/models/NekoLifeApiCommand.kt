@@ -1,16 +1,15 @@
 package bot.boobbot.models
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.json
 import java.time.Instant
 
-abstract class NekoLifeApiCommand(private val category: String) : AsyncCommand {
+abstract class NekoLifeApiCommand(private val category: String) : Command() {
 
     override suspend fun executeAsync(ctx: Context) {
-
         val res = BoobBot.requestUtil.get("https://nekos.life/api/v2/img/$category").await()?.json()
             ?: return ctx.send("\uD83D\uDEAB oh? something broken af")
 

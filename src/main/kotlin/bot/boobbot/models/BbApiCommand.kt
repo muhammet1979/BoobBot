@@ -1,15 +1,15 @@
 package bot.boobbot.models
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.json
 import okhttp3.Headers
 import java.time.Instant
 
-abstract class BbApiCommand(private val category: String) : AsyncCommand {
+abstract class BbApiCommand(private val category: String) : Command() {
 
     private val headers = Headers.of("Key", BoobBot.config.bbApiKey)
 

@@ -1,13 +1,13 @@
 package bot.boobbot.models
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.json
 import okhttp3.Headers
 
-abstract class SendCommand(private val category: String, private val endpoint: String) : AsyncCommand {
+abstract class SendCommand(private val category: String, private val endpoint: String) : Command() {
 
     private val headers = Headers.of("Key", BoobBot.config.bbApiKey)
 

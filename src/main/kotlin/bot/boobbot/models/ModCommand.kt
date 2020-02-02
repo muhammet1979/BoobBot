@@ -1,10 +1,10 @@
 package bot.boobbot.models
 
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import net.dv8tion.jda.api.entities.Member
 
-abstract class ModCommand : Command {
+abstract class ModCommand : Command() {
 
     fun resolveTargetAndReason(ctx: Context): Pair<Member?, String?> {
         val userArgument = ctx.args.take(1)

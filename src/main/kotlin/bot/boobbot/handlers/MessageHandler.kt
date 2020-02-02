@@ -1,6 +1,7 @@
 package bot.boobbot.handlers
 
 import bot.boobbot.BoobBot
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import bot.boobbot.misc.Utils
 import bot.boobbot.misc.json
@@ -50,9 +51,9 @@ class MessageHandler : ListenerAdapter() {
         val args = messageContent.substring(trigger.length).split(" +".toRegex()).toMutableList()
         val commandString = args.removeAt(0)
 
-        val command = BoobBot.commands.findCommand(commandString)
+        val parentCommand = BoobBot.commands.findCommand(commandString)
 
-        if (command == null) {
+        if (parentCommand == null) {
             if (!event.channelType.isGuild) {
                 return
             }
@@ -67,25 +68,23 @@ class MessageHandler : ListenerAdapter() {
             val disabledCommands = BoobBot.database.getDisabledCommands(event.guild.id)
             val disabledForChannel = BoobBot.database.getDisabledForChannel(event.guild.id, event.channel.id)
 
-            if (disabledCommands.contains(command.name) || disabledForChannel.contains(command.name)) {
+            if (disabledCommands.contains(parentCommand.name()) || disabledForChannel.contains(parentCommand.name())) {
                 return
             }
         }
 
-        if (!command.properties.enabled) {
+        val command = parentCommand.findSubcommand(args.firstOrNull() ?: "") ?: parentCommand
+
+        if (command.properties().developerOnly && !Config.owners.contains(event.author.idLong)) {
             return
         }
 
-        if (command.properties.developerOnly && !Config.owners.contains(event.author.idLong)) {
-            return
-        }
-
-        if (command.properties.guildOnly && !event.channelType.isGuild) {
+        if (command.properties().guildOnly && !event.channelType.isGuild) {
             event.channel.sendMessage("No, whore you can only use this in a guild").queue()
             return
         }
 
-        if (command.properties.nsfw && event.channelType.isGuild && !event.textChannel.isNSFW) {
+        if (command.properties().nsfw && event.channelType.isGuild && !event.textChannel.isNSFW) {
             BoobBot.requestUtil.get("https://nekos.life/api/v2/img/meow").queue {
                 val j = it?.json()
                     ?: return@queue event.channel.sendMessage("This channel isn't NSFW, whore.").queue()
@@ -107,7 +106,7 @@ class MessageHandler : ListenerAdapter() {
             return
         }
 
-        if (command.properties.donorOnly && !Utils.checkDonor(event.message)) {
+        if (command.properties().donorOnly && !Utils.checkDonor(event.message)) {
             event.channel.sendMessage(
                 Formats.error(
                     " Sorry this command is only available to our Patrons.\n<:p_:475801484282429450> "
@@ -116,16 +115,6 @@ class MessageHandler : ListenerAdapter() {
             ).queue()
             return
         }
-
-//        if (command.properties.boosterOnly && !Utils.isBooster(event.message.author)) {
-//            event.channel.sendMessage(
-//                Formats.error(
-//                    " Sorry this command is only available to our Nitro boosters.\n"
-//                            + "Stop being a fuck and boost today!\nhttps://invite.boob.bot"
-//                )
-//            ).queue()
-//            return
-//        }
 
         if (event.channelType.isGuild
             && event.guild.selfMember.hasPermission(event.textChannel, Permission.MESSAGE_MANAGE)
@@ -137,10 +126,13 @@ class MessageHandler : ListenerAdapter() {
         try {
             Utils.logCommand(event.message)
             BoobBot.metrics.record(Metrics.happened("command"))
-            BoobBot.metrics.record(Metrics.happened(command.name))
-            command.execute(trigger, event.message, args)
+            BoobBot.metrics.record(Metrics.happened(command.name()))
+
+            val ctxArgs = if (command.isSubCommand()) args.drop(1) else args
+            val context = Context(trigger, event.message, ctxArgs)
+            command.execute(context)
         } catch (e: Exception) {
-            BoobBot.log.error("Command `${command.name}` encountered an error during execution", e)
+            BoobBot.log.error("Command `${command.name()}` encountered an error during execution", e)
             event.message.addReaction("\uD83D\uDEAB").queue()
         }
     }

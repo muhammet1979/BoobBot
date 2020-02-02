@@ -1,9 +1,9 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.CodeblockBuilder
 import bot.boobbot.misc.Utils
 import com.sun.management.OperatingSystemMXBean
@@ -14,7 +14,7 @@ import java.text.DecimalFormat
 import kotlin.math.max
 
 @CommandProperties(description = "Overview of BoobBot's process")
-class Stats : AsyncCommand {
+class Stats : Command() {
 
     private val dpFormatter = DecimalFormat("0.00")
 

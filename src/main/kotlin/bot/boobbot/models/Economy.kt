@@ -1,6 +1,6 @@
 package bot.boobbot.models
 
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Formats
 import java.time.Instant
 import kotlin.math.floor

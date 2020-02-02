@@ -1,13 +1,13 @@
 package bot.boobbot.models
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.AsyncCommand
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.api.Context
 import net.dv8tion.jda.api.Permission
 import okhttp3.Headers
 import okhttp3.HttpUrl
 
-abstract class MemeAvatarCommand(private val category: String) : AsyncCommand {
+abstract class MemeAvatarCommand(private val category: String) : Command() {
 
     private val endpointUrl = "https://dankmemer.services/api/$category"
     private val urlBuilder

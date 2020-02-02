@@ -1,4 +1,4 @@
-package bot.boobbot.flight
+package bot.boobbot.flight.api
 
 import bot.boobbot.BoobBot
 import bot.boobbot.audio.GuildMusicManager

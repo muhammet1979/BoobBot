@@ -1,17 +1,17 @@
 package bot.boobbot.commands.bot
 
 import bot.boobbot.BoobBot
-import bot.boobbot.flight.Category
-import bot.boobbot.flight.Command
-import bot.boobbot.flight.CommandProperties
-import bot.boobbot.flight.Context
+import bot.boobbot.flight.api.Category
+import bot.boobbot.flight.api.Command
+import bot.boobbot.flight.annotations.CommandProperties
+import bot.boobbot.flight.api.Context
 import bot.boobbot.misc.Colors
 import bot.boobbot.misc.Utils
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary
 import net.dv8tion.jda.api.JDAInfo
 
 @CommandProperties(description = "Displays bot info.", category = Category.MISC)
-class Info : Command {
+class Info : Command() {
 
     override fun execute(ctx: Context) {
         val shards = BoobBot.shardManager.shardsTotal
